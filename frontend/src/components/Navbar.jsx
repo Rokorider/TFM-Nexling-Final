@@ -3,9 +3,9 @@ function Navbar() {
   return (
     <header className="navbar">
       <a className="brand" href="#">
-        <span className="brand-icon">文</span>
+        <span className="brand-icon">文 </span>
         <span>
-          Traductor<span className="brand-accent">IA</span>
+          Nexling<span className="brand-accent"></span>
         </span>
       </a>
 

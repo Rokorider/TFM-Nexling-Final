@@ -2,7 +2,7 @@
 function Footer() {
   return (
     <footer className="footer">
-      <span>TraductorIA </span>
+      <span>Nexling </span>
       <span>Conectando idiomas, acercando personas.</span>
     </footer>
   );
