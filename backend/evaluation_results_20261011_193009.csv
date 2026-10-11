@@ -1,0 +1,16 @@
+﻿id,source_lang,target_lang,category,original_text,reference_translation,model_translation,time_seconds,status
+1,es,en,cotidiana,"Buenos días, ¿cómo estás?","Good morning, how are you?","Good morning, how are you?",5.046,OK
+2,en,es,temporal,I will call you when I arrive home.,Te llamaré cuando llegue a casa.,Te llamaré cuando llegue a casa.,1.409,OK
+3,fr,es,cotidiana,Je voudrais réserver une table pour deux personnes.,Me gustaría reservar una mesa para dos personas.,Me gustaría reservar una mesa para dos personas.,1.594,OK
+4,de,en,comparativa,Das Wetter ist heute besser als gestern.,The weather is better today than yesterday.,The weather is better today than yesterday.,1.402,OK
+5,it,es,negacion,Non ho capito quello che hai detto.,No he entendido lo que has dicho.,No entiendo lo que dijiste.,1.215,OK
+6,pt,es,cotidiana,Preciso de ajuda para encontrar a estação de comboios.,Necesito ayuda para encontrar la estación de tren.,Necesito ayuda para encontrar la estación de trenes.,1.577,OK
+7,nl,en,oracion_compuesta,"Hoewel het regende, gingen we toch naar het park.","Although it was raining, we still went to the park.","Even though it was raining, we went to the park anyway.",2.065,OK
+8,ru,es,oracion_compuesta,"Я изучаю новые языки, потому что хочу путешествовать.",Estudio nuevos idiomas porque quiero viajar.,Aprendo nuevos idiomas porque quiero viajar.,1.604,OK
+9,zh,es,negacion,今天我不能去上班，因为我生病了。,Hoy no puedo ir a trabajar porque estoy enfermo.,No puedo ir a trabajar hoy porque estoy enfermo.,1.716,OK
+10,ja,en,contraste,日本語を勉強するのは楽しいですが、漢字は難しいです。,"Studying Japanese is fun, but kanji are difficult.","It's fun to learn Japanese, but it's hard to write.",2.305,OK
+11,es,en,negacion,No creo que sea una buena idea.,I don't think it's a good idea.,I don't think that's such a good idea.,1.91,OK
+12,en,es,pregunta,Could you tell me how to get to the nearest hospital?,¿Podría decirme cómo llegar al hospital más cercano?,¿Podría decirme cómo llegar al hospital más cercano?,1.952,OK
+13,fr,en,condicional,"Si j'avais plus de temps, je voyagerais davantage.","If I had more time, I would travel more.","If I had more time, I'd travel more.",1.892,OK
+14,de,es,oracion_compuesta,"Die Entscheidung hängt davon ab, wie viel Zeit wir haben.",La decisión depende de cuánto tiempo tenemos.,La decisión depende de cuánto tiempo tenemos.,1.42,OK
+15,es,en,oracion_compuesta,"Aunque estaba cansada, terminó el trabajo antes de acostarse.","Although she was tired, she finished the work before going to bed.","Although she was tired, she finished her work before bedtime.",1.905,OK

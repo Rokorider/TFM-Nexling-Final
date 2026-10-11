@@ -1,0 +1,29 @@
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node y React
+node_modules/
+dist/
+
+# Variables privadas
+.env
+.env.*
+!.env.example
+
+# Modelos y archivos pesados
+.cache/
+models/
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# Archivos temporales
+*.log
+.DS_Store
+Thumbs.db
