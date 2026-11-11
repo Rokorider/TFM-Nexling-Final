@@ -5,6 +5,9 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 
 MODEL_NAME = "facebook/nllb-200-distilled-600M"
+@lru_cache(maxsize=1)
+def load_tokenizer():
+    return AutoTokenizer.from_pretrained(MODEL_NAME)
 
 LANGUAGES = {
     "es": {"name": "Español", "model_code": "spa_Latn"},
@@ -23,7 +26,7 @@ LANGUAGES = {
 @lru_cache(maxsize=1)
 def load_translation_model():
     """Carga el modelo una sola vez y reutiliza sus recursos."""
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+    tokenizer = load_tokenizer()
     model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME)
 
     model.generation_config.max_length = None
@@ -32,6 +35,90 @@ def load_translation_model():
 
     return tokenizer, model
 
+
+def split_text_into_chunks(text, tokenizer, max_tokens=200):
+    """Divide un texto en fragmentos que caben en el modelo."""
+
+    if not text.strip():
+        return []
+
+    token_ids = tokenizer(
+        text,
+        add_special_tokens=False,
+    )["input_ids"]
+
+    if len(token_ids) <= max_tokens:
+        return [text]
+
+    import re
+
+    # Intentamos dividir primero por oraciones.
+    sentences = re.split(r"(?<=[.!?。！？])\s+", text)
+
+    chunks = []
+    current_chunk = ""
+
+    def token_count(value):
+        return len(
+            tokenizer(
+                value,
+                add_special_tokens=False,
+            )["input_ids"]
+        )
+
+    for sentence in sentences:
+        candidate = (
+            f"{current_chunk} {sentence}".strip()
+            if current_chunk
+            else sentence
+        )
+
+        if token_count(candidate) <= max_tokens:
+            current_chunk = candidate
+            continue
+
+        if current_chunk:
+            chunks.append(current_chunk)
+            current_chunk = ""
+
+        if token_count(sentence) <= max_tokens:
+            current_chunk = sentence
+            continue
+
+        # Si una oración supera el límite,
+        # dividimos por palabras.
+        words = sentence.split()
+        partial = ""
+
+        for word in words:
+            candidate = f"{partial} {word}".strip()
+
+            if token_count(candidate) > max_tokens:
+                if partial:
+                    chunks.append(partial)
+                    partial = ""
+
+                if token_count(word) > max_tokens:
+                    # Último recurso: fragmentar por caracteres.
+                    piece = ""
+                    for character in word:
+                        if token_count(piece + character) > max_tokens:
+                            if piece:
+                                chunks.append(piece)
+                            piece = character
+                    partial = piece
+                else:
+                    partial = word
+            else:
+                partial = candidate
+
+        if partial:
+            current_chunk = partial
+
+    if current_chunk:
+        chunks.append(current_chunk)
+
+    return chunks
 
 def translate_single_text(
     text: str,
@@ -47,7 +134,7 @@ def translate_single_text(
     inputs = tokenizer(
         text,
         return_tensors="pt",
-        truncation=True,
+        truncation=False,
         max_length=512,
     )
 
@@ -63,7 +150,7 @@ def translate_single_text(
         generated_tokens = model.generate(
             **inputs,
             forced_bos_token_id=target_token_id,
-            max_new_tokens=128,
+            max_new_tokens=384,
             num_beams=1,
             repetition_penalty=1.1,
             no_repeat_ngram_size=3,
@@ -120,13 +207,22 @@ def translate_text(
         trailing_spaces = line[len(line.rstrip()):]
         content = line.strip()
 
-        translated = translate_single_text(
-            content,
-            source_lang,
-            target_lang,
-            tokenizer,
-            model,
-        )
+        
+        chunks = split_text_into_chunks(content, tokenizer)
+
+        translated_chunks = []
+
+        for chunk in chunks:
+            translated_chunk = translate_single_text(
+                chunk,
+                source_lang,
+                target_lang,
+                tokenizer,
+                model,
+            )
+            translated_chunks.append(translated_chunk)
+
+        translated = " ".join(translated_chunks)
 
         translated_lines.append(
             leading_spaces + translated.strip() + trailing_spaces
