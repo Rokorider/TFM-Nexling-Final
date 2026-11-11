@@ -35,28 +35,14 @@ def load_translation_model():
 
     return tokenizer, model
 
-
 def split_text_into_chunks(text, tokenizer, max_tokens=200):
-    """Divide un texto en fragmentos que caben en el modelo."""
+    """Divide el texto en fragmentos sin superar el límite de tokens y conservando el contenido original."""
+
+    if not text:
+        return []
 
     if not text.strip():
         return []
-
-    token_ids = tokenizer(
-        text,
-        add_special_tokens=False,
-    )["input_ids"]
-
-    if len(token_ids) <= max_tokens:
-        return [text]
-
-    import re
-
-    # Intentamos dividir primero por oraciones.
-    sentences = re.split(r"(?<=[.!?。！？])\s+", text)
-
-    chunks = []
-    current_chunk = ""
 
     def token_count(value):
         return len(
@@ -66,54 +52,33 @@ def split_text_into_chunks(text, tokenizer, max_tokens=200):
             )["input_ids"]
         )
 
-    for sentence in sentences:
-        candidate = (
-            f"{current_chunk} {sentence}".strip()
-            if current_chunk
-            else sentence
-        )
+    if token_count(text) <= max_tokens:
+        return [text]
+
+    chunks = []
+    current_chunk = ""
+
+    # Recorremos el texto carácter por carácter.
+    # Así también podemos procesar idiomas sin espacios,
+    # como el chino y el japonés.
+    for character in text:
+        candidate = current_chunk + character
 
         if token_count(candidate) <= max_tokens:
             current_chunk = candidate
-            continue
+        else:
+            if not current_chunk:
+                raise ValueError(
+                    "Un carácter supera el límite máximo de tokens."
+                )
 
-        if current_chunk:
             chunks.append(current_chunk)
-            current_chunk = ""
+            current_chunk = character
 
-        if token_count(sentence) <= max_tokens:
-            current_chunk = sentence
-            continue
-
-        # Si una oración supera el límite,
-        # dividimos por palabras.
-        words = sentence.split()
-        partial = ""
-
-        for word in words:
-            candidate = f"{partial} {word}".strip()
-
-            if token_count(candidate) > max_tokens:
-                if partial:
-                    chunks.append(partial)
-                    partial = ""
-
-                if token_count(word) > max_tokens:
-                    # Último recurso: fragmentar por caracteres.
-                    piece = ""
-                    for character in word:
-                        if token_count(piece + character) > max_tokens:
-                            if piece:
-                                chunks.append(piece)
-                            piece = character
-                    partial = piece
-                else:
-                    partial = word
-            else:
-                partial = candidate
-
-        if partial:
-            current_chunk = partial
+            if token_count(current_chunk) > max_tokens:
+                raise ValueError(
+                    "No se ha podido dividir el texto correctamente."
+                )
 
     if current_chunk:
         chunks.append(current_chunk)
