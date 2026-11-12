@@ -21,9 +21,9 @@ function TranslationPanel({
       {isSource ? (
         <textarea
           value={text}
-          onChange={(e) => onTextChange(e.target.value.slice(0, 5000))}
+          onChange={(e) => onTextChange(e.target.value.slice(0, 15000))}
           placeholder="Escribe aquí el texto que quieres traducir..."
-          maxLength={5000}
+          maxLength={15000}
           aria-label="Texto original"
         />
       ) : (
@@ -46,7 +46,7 @@ function TranslationPanel({
       <div className="panel-footer">
         {isSource ? (
           <>
-            <span>{text.length}/5000 caracteres</span>
+            <span>{text.length}/15000 caracteres</span>
             <button className="clear-button" onClick={onClear} type="button">
               Limpiar
             </button>

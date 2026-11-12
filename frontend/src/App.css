@@ -129,6 +129,37 @@ button:disabled {
   color: #b0bdb3;
 }
 
+/* Contador de caracteres */
+.character-counter {
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.counter-dark-green {
+  color: #166534;
+}
+
+.counter-light-green {
+  color: #65a30d;
+}
+
+.counter-yellow {
+  color: #ca8a04;
+}
+
+.counter-orange {
+  color: #ea580c;
+}
+
+.counter-light-red {
+  color: #ef4444;
+}
+
+.counter-dark-red {
+  color: #991b1b;
+}
+
 /* Mensajes originales y traducidos */
 .app.dark-mode .chat-message-original {
   background: #29372e;

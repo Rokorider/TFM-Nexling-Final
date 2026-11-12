@@ -12,6 +12,17 @@ import Footer from './components/Footer';
 
 import { translateText } from './services/translationService';
 
+const MAX_CHARACTERS = 15000;
+
+function getCounterColor(percentage) {
+  if (percentage < 25) return 'counter-dark-green';
+  if (percentage < 50) return 'counter-light-green';
+  if (percentage < 75) return 'counter-yellow';
+  if (percentage < 90) return 'counter-orange';
+  if (percentage < 95) return 'counter-light-red';
+  return 'counter-dark-red';
+}
+
 function App() {
   const [targetLang, setTargetLang] = useState('es');
   const [text, setText] = useState('');
@@ -195,6 +206,9 @@ function App() {
     }
   }
 
+    const characterPercentage = (text.length / MAX_CHARACTERS) * 100;
+    const counterColor = getCounterColor(characterPercentage);
+
   return (
     <div className={`app ${darkMode ? 'dark-mode' : ''}`}>
       <Navbar />
@@ -298,16 +312,19 @@ function App() {
                 onKeyDown={handleTextareaKeyDown}
                 placeholder="Escribe aquí el texto que quieres traducir..."
                 rows={3}
-                maxLength={5000}
+                maxLength={MAX_CHARACTERS}
                 disabled={loading}
                 aria-label="Texto que quieres traducir"
               />
 
               <div className="chat-composer-footer">
-                <span>
-                  {text.length}/5000 caracteres
+                <span
+                  className={`character-counter ${counterColor}`}
+                  aria-live="polite"
+                >
+                  {text.length.toLocaleString('es-ES')} / {MAX_CHARACTERS.toLocaleString('es-ES')} caracteres
                 </span>
-
+                
                 <button
                   className="translate-button"
                   type="submit"
