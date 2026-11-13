@@ -195,6 +195,31 @@ button:disabled {
   color: #b0bdb3;
 }
 
+/* Colores del contador de caracteres */
+.app.dark-mode .chat-composer-footer .character-counter.counter-dark-green {
+  color: #166534;
+}
+
+.app.dark-mode .chat-composer-footer .character-counter.counter-light-green {
+  color: #65a30d;
+}
+
+.app.dark-mode .chat-composer-footer .character-counter.counter-yellow {
+  color: #ca8a04;
+}
+
+.app.dark-mode .chat-composer-footer .character-counter.counter-orange {
+  color: #ea580c;
+}
+
+.app.dark-mode .chat-composer-footer .character-counter.counter-light-red {
+  color: #ef4444;
+}
+
+.app.dark-mode .chat-composer-footer .character-counter.counter-dark-red {
+  color: #991b1b;
+}
+
 /* Botones */
 .app.dark-mode .clear-button,
 .app.dark-mode .detect-button,
@@ -641,6 +666,31 @@ button:disabled {
 .chat-composer-footer > span {
   color: #859087;
   font-size: 0.8rem;
+}
+
+/* Colores del contador de caracteres */
+.chat-composer-footer .character-counter.counter-dark-green {
+  color: #166534;
+}
+
+.chat-composer-footer .character-counter.counter-light-green {
+  color: #65a30d;
+}
+
+.chat-composer-footer .character-counter.counter-yellow {
+  color: #ca8a04;
+}
+
+.chat-composer-footer .character-counter.counter-orange {
+  color: #ea580c;
+}
+
+.chat-composer-footer .character-counter.counter-light-red {
+  color: #ef4444;
+}
+
+.chat-composer-footer .character-counter.counter-dark-red {
+  color: #991b1b;
 }
 
 /* ========================================
