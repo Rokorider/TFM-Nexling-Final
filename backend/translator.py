@@ -121,6 +121,15 @@ def translate_single_text(
             no_repeat_ngram_size=3,
         )
 
+        print("TEXTO ORIGINAL:", repr(text))
+        print(
+            "TEXTO GENERADO:",
+            repr(tokenizer.batch_decode(
+                generated_tokens,
+                skip_special_tokens=True,
+            )[0])
+        )
+
     return tokenizer.batch_decode(
         generated_tokens,
         skip_special_tokens=True,
